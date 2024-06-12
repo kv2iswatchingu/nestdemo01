@@ -9,7 +9,7 @@ export class MusicSavePrivateService {
         @InjectModel("MusicSavePrivate_MODEL") private readonly musicSavePrivateModel: Model<MusicSavePrivate>
     ){}
 
-    async saveMusicPrivate(musicName:string,musicRaw:Buffer,musicSize:number){
+    async saveMusicPrivate(musicName:string,musicRaw:Buffer,musicSize:number):Promise<any>{
         return this.musicSavePrivateModel.find({
            musicName:musicName,
            musicRaw:musicRaw,
@@ -17,6 +17,7 @@ export class MusicSavePrivateService {
         }).then(res =>{
             if(res.length != 0){
                 console.log("已有此曲目")
+                throw Error("已有此曲目")
             }
         }).then(()=>{
             try{
@@ -35,4 +36,21 @@ export class MusicSavePrivateService {
             console.log("完全错误")
         })
     }
+
+    async findMusicPrivate(id:string):Promise<MusicSavePrivate>{
+        return this.musicSavePrivateModel.findById(id).lean();
+    }
+
+    /* async finduRL(musicName:string):Promise<string>{
+        const file = await this.musicSavePrivateModel.find({musicName:musicName}).lean();
+        if(file[0].musicRaw){
+            const blob = new Blob([file[0].musicRaw])
+            console.log(blob)
+            const url = URL.createObjectURL(blob)
+            console.log(url)
+            return url;
+        }else{
+            return "err"
+        }
+    } */
 }
