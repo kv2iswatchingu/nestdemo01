@@ -24,7 +24,8 @@ export class MusicSavePrivateController {
         const createMusicData = await this.musicSavePrivateService.saveMusicPrivate(
             musicData.originalname,
             musicData.buffer,
-            musicData.size
+            musicData.size,
+            musicData.mimetype
         );
         return createMusicData;
     }

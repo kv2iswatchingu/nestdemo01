@@ -7,6 +7,7 @@ import { SongListSchmema } from './schema/songList.schema';
 import { AblumSchmema } from './schema/ablum.schema';
 import { CoverPrivateSchmema } from './schema/private/coverPrivate.schema';
 import { ImgPrivateSchmema } from './schema/private/ImgPrivate.schema';
+import { LyricSchmema } from './schema/lyric.schema';
 
 const MONGO_MODELS = MongooseModule.forFeature([
     {
@@ -43,6 +44,11 @@ const MONGO_MODELS = MongooseModule.forFeature([
         name:"IMG_MODEL",
         schema:ImgPrivateSchmema,
         collection:"Img"
+    },
+    {
+        name:"Lyric_MODEL",
+        schema:LyricSchmema,
+        collection:"Lyric"
     }
 ])
 

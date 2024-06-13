@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CoverPrivate } from 'src/interface/CoverPrivate.interface';
 import { Ablum } from 'src/interface/ablum.interface';
 
 @Injectable()
 export class AblumService {
     constructor(
-        @InjectModel('Ablum_MODEL') private readonly ablumModel:Model<Ablum>
+        @InjectModel('Ablum_MODEL') private readonly ablumModel:Model<Ablum>,
+        @InjectModel('Cover_MODEL') private readonly coverModel:Model<CoverPrivate>
+
     ){
 
     }
@@ -59,4 +62,17 @@ export class AblumService {
             console.log("完全错误")
         })
     }
+
+    //
+    public async getCoverByAblumId(ablumId:string):Promise<CoverPrivate>{
+        try{    
+            const ablumInfo = await this.ablumModel.findById(ablumId).lean();
+            const coverId = ablumInfo.id_Cover;
+            return this.coverModel.findById(coverId).lean();
+        }
+        catch{
+            throw Error("失败")
+        }
+    }
+    
 }

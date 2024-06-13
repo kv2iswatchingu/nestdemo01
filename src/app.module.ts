@@ -11,6 +11,7 @@ import { SongListModule } from './modules/songList/songList.module';
 import { AblumModule } from './modules/ablum/ablum.module';
 import { CoverPrivateModule } from './modules/private/coverPrivate/coverPrivate.module';
 import { ImgPrivateModule } from './modules/private/imgPrivate/imgPrivate.module';
+import { LyricModule } from './modules/lyric/lyric.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { ImgPrivateModule } from './modules/private/imgPrivate/imgPrivate.module
     MusicInfoModule,
     AblumModule,
     CoverPrivateModule,
-    ImgPrivateModule
+    ImgPrivateModule,
+    LyricModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,13 +4,16 @@ import { MusicInfo, MusicInfoExtend, MusicInfoOutput } from 'src/interface/music
 import { SongListService } from '../songList/songList.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MusicSavePrivateService } from '../private/musicSavePrivate/musicSavePrivate.service';
+import { AblumService } from '../ablum/ablum.service';
+import { CoverPrivateService } from '../private/coverPrivate/coverPrivate.service';
 
 @Controller('musicInfo')
 export class MusicInfoController {
     constructor(
         private musicInfoService:MusicInfoService,
         private songListService:SongListService,
-        private musicSavePrivateService:MusicSavePrivateService
+        private musicSavePrivateService:MusicSavePrivateService,
+        private ablumService:AblumService,
     ){
 
     }
@@ -21,11 +24,15 @@ export class MusicInfoController {
         const musicIdList = await this.songListService.getSongListById(songListId);
         const resultList = await this.musicInfoService.getMusicInfoListBySonglist(musicIdList._MusicIdList);
         for(let i = 0; i < resultList.length; i ++){
-            const musicRaw = await this.musicSavePrivateService.findMusicPrivate(resultList[i]._MusicRawId)
+            const musicPrivate = await this.musicSavePrivateService.findMusicPrivate(resultList[i]._MusicRawId)
+            const coverPrivate = await this.ablumService.getCoverByAblumId(resultList[i]._AblumId)
+
             const musicInfoEx:MusicInfoOutput = {
                 _id:resultList[i]._id,
-                _AblumId:resultList[i]._AblumId,
-                musicRaw:musicRaw.musicRaw,
+                coverRaw:coverPrivate.coverRaw,
+                coverType:coverPrivate.coverType,
+                musicRaw:musicPrivate.musicRaw,
+                musicType:musicPrivate.musicType,
                 musicName:resultList[i].musicName,
                 musicStyle:resultList[i].musicStyle,
                 musicSinger:resultList[i].musicSinger,
@@ -44,11 +51,11 @@ export class MusicInfoController {
         @UploadedFile() musicRawData:Express.Multer.File,
         @Body() musicInfo:MusicInfoExtend
         ){
-        
         const res = await this.musicSavePrivateService.saveMusicPrivate(
             musicRawData.originalname,
             musicRawData.buffer,
-            musicRawData.size
+            musicRawData.size,
+            musicRawData.mimetype
         )
         const musicRawId = res._id;
         this.musicInfoService.postMusic(

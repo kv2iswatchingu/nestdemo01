@@ -11,4 +11,7 @@ export class MusicSavePrivate extends Document{
 
     @Prop()
     readonly musicSize:number;
+
+    @Prop()
+    readonly musicType:string;
 }

@@ -9,11 +9,12 @@ export class MusicSavePrivateService {
         @InjectModel("MusicSavePrivate_MODEL") private readonly musicSavePrivateModel: Model<MusicSavePrivate>
     ){}
 
-    async saveMusicPrivate(musicName:string,musicRaw:Buffer,musicSize:number):Promise<any>{
+    async saveMusicPrivate(musicName:string,musicRaw:Buffer,musicSize:number,musicType:string):Promise<any>{
         return this.musicSavePrivateModel.find({
            musicName:musicName,
            musicRaw:musicRaw,
-           musicSize:musicSize
+           musicSize:musicSize,
+           musicType:musicType
         }).then(res =>{
             if(res.length != 0){
                 console.log("已有此曲目")
@@ -25,7 +26,8 @@ export class MusicSavePrivateService {
                     {
                         musicName:musicName,
                         musicRaw:musicRaw,
-                        musicSize:musicSize
+                        musicSize:musicSize,
+                        musicType:musicType
                     }
                 )
                 return createMusicPData.save();

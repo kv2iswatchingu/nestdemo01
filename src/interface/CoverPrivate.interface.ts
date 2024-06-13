@@ -12,4 +12,6 @@ export class CoverPrivate extends Document{
     @Prop()
     readonly coverSize:number;
 
+    @Prop()
+    readonly coverType:string;
 }

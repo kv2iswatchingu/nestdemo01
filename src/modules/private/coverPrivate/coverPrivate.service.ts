@@ -9,11 +9,12 @@ export class CoverPrivateService {
        @InjectModel("Cover_MODEL") private readonly coverPrivateModel: Model<CoverPrivate>
     ){}
 
-    async saveCoverPrivate(coverName:string,coverRaw:Buffer,coverSize:number):Promise<any>{
+    async saveCoverPrivate(coverName:string,coverRaw:Buffer,coverSize:number,coverType:string):Promise<any>{
         return this.coverPrivateModel.find({
             coverName:coverName,
             coverRaw:coverRaw,
-            coverSize:coverSize
+            coverSize:coverSize,
+            coverType:coverType
         }).then(res =>{
             if(res.length != 0){
                 console.log("已有")
@@ -25,7 +26,8 @@ export class CoverPrivateService {
                     {
                         coverName:coverName,
                         coverRaw:coverRaw,
-                        coverSize:coverSize
+                        coverSize:coverSize,
+                        coverType:coverType
                     }
                 )
                 /* const result = await createCoverData.save();
@@ -44,16 +46,4 @@ export class CoverPrivateService {
         return file;
     }
 
-    /* async finduRL(musicName:string):Promise<string>{
-        const file = await this.musicSavePrivateModel.find({musicName:musicName}).lean();
-        if(file[0].musicRaw){
-            const blob = new Blob([file[0].musicRaw])
-            console.log(blob)
-            const url = URL.createObjectURL(blob)
-            console.log(url)
-            return url;
-        }else{
-            return "err"
-        }
-    } */
 }

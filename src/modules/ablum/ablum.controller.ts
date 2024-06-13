@@ -32,7 +32,8 @@ export class AblumController {
         const res =  await this.coverService.saveCoverPrivate(
             coverData.originalname,
             coverData.buffer,
-            coverData.size
+            coverData.size,
+            coverData.mimetype
         );
         const id_Cover = res._id;
         //console.log(ablumInfo)

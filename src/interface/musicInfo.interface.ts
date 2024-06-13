@@ -54,8 +54,10 @@ export class MusicInfoExtend extends Document{
 
 export type MusicInfoOutput = {
     _id:unknown;
-    _AblumId:string;
+    coverRaw:Buffer;
+    coverType:string;
     musicRaw:Buffer;
+    musicType:string;
     musicName:string;
     musicStyle:string;
     musicSinger:string;
