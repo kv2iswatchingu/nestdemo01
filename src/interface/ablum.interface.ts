@@ -26,3 +26,12 @@ export class AblumInfo extends Document{
     @Prop()
     readonly ablumYear:string;
 }
+
+export type AblumOutput = {
+    ablumName:string;
+    coverRaw:Buffer;
+    coverType:string;
+    ablumBand:string;
+    ablumYear:string;
+
+}

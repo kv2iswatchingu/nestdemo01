@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AblumService } from './ablum.service';
-import { Ablum, AblumInfo } from 'src/interface/ablum.interface';
+import { Ablum, AblumInfo, AblumOutput } from 'src/interface/ablum.interface';
 import { CoverPrivateService } from '../private/coverPrivate/coverPrivate.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -14,8 +14,22 @@ export class AblumController {
     }
     
     @Get('getAll')
-    async getAll():Promise<Ablum[]>{
-        return this.ablumService.getAll();
+    async getAll():Promise<AblumOutput[]>{
+        let output:AblumOutput[] = [];
+        const ablumRaw = await this.ablumService.getAll();
+        for(let i = 0; i < ablumRaw.length; i++){
+            const coverData = await this.coverService.findCoverPrivate(ablumRaw[i].id_Cover)
+            
+            const ablumEx:AblumOutput = {
+                ablumName:ablumRaw[i].ablumName,
+                coverRaw:coverData.coverRaw,
+                coverType:coverData.coverType,
+                ablumBand:ablumRaw[i].ablumBand,
+                ablumYear:ablumRaw[i].ablumYear
+            }
+            output.push(ablumEx)
+        }
+        return output;
     }
 
     @Get('GetById/:ablumId')

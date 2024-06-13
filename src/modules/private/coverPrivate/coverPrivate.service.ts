@@ -41,7 +41,7 @@ export class CoverPrivateService {
         })
     }
 
-    async findMusicPrivate(id:string):Promise<CoverPrivate>{
+    async findCoverPrivate(id:string):Promise<CoverPrivate>{
         const file = await this.coverPrivateModel.findById(id).lean();
         return file;
     }
