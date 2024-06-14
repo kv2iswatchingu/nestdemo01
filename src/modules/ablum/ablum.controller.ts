@@ -21,6 +21,7 @@ export class AblumController {
             const coverData = await this.coverService.findCoverPrivate(ablumRaw[i].id_Cover)
             
             const ablumEx:AblumOutput = {
+                ablumId:ablumRaw[i]._id,
                 ablumName:ablumRaw[i].ablumName,
                 coverRaw:coverData.coverRaw,
                 coverType:coverData.coverType,

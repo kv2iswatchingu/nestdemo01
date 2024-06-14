@@ -24,6 +24,15 @@ export class MusicInfoService {
         }
     }
 
+    public async getMusicInfoListByAblumId(ablumId:string):Promise<MusicInfo[]>{
+        try{
+            return this.musicInfoModel.find({_AblumId:ablumId}).lean()
+        }
+        catch{
+            throw Error("失败")
+        }
+    }
+
     public async postMusic(
         _AblumId:string,
         musicRawId:string,

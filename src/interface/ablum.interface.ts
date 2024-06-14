@@ -28,6 +28,7 @@ export class AblumInfo extends Document{
 }
 
 export type AblumOutput = {
+    ablumId:unknown;
     ablumName:string;
     coverRaw:Buffer;
     coverType:string;

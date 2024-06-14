@@ -18,7 +18,7 @@ export class MusicInfoController {
 
     }
 
-    @Get(':songListId')
+    @Get('songListId/:songListId')
     async getMusicInfoListBySonglist(@Param('songListId') songListId:string):Promise<MusicInfoOutput[]>{
         let output:MusicInfoOutput[] = [];
         const musicIdList = await this.songListService.getSongListById(songListId);
@@ -27,6 +27,32 @@ export class MusicInfoController {
             const musicPrivate = await this.musicSavePrivateService.findMusicPrivate(resultList[i]._MusicRawId)
             const coverPrivate = await this.ablumService.getCoverByAblumId(resultList[i]._AblumId)
 
+            const musicInfoEx:MusicInfoOutput = {
+                _id:resultList[i]._id,
+                coverRaw:coverPrivate.coverRaw,
+                coverType:coverPrivate.coverType,
+                musicRaw:musicPrivate.musicRaw,
+                musicType:musicPrivate.musicType,
+                musicName:resultList[i].musicName,
+                musicStyle:resultList[i].musicStyle,
+                musicSinger:resultList[i].musicSinger,
+                musicAuthor:resultList[i].musicAuthor,
+                musicLong:resultList[i].musicLong,
+                musicUploadTime:resultList[i].musicUploadTime
+            }
+            output.push(musicInfoEx)
+        }
+        return output;
+    }
+
+
+    @Get('ablumId/:ablumId')
+    async getMusicInfoListByAblumId(@Param('ablumId') ablumId:string):Promise<MusicInfoOutput[]>{
+        let output:MusicInfoOutput[] = [];
+        const resultList = await this.musicInfoService.getMusicInfoListByAblumId(ablumId);
+        for(let i = 0; i < resultList.length; i ++){
+            const musicPrivate = await this.musicSavePrivateService.findMusicPrivate(resultList[i]._MusicRawId)
+            const coverPrivate = await this.ablumService.getCoverByAblumId(resultList[i]._AblumId)
             const musicInfoEx:MusicInfoOutput = {
                 _id:resultList[i]._id,
                 coverRaw:coverPrivate.coverRaw,
