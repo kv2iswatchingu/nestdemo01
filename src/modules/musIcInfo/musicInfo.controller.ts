@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { MusicInfoService } from './musicInfo.service';
 import { MusicInfo, MusicInfoExtend, MusicInfoOutput } from 'src/interface/musicInfo.interface';
 import { SongListService } from '../songList/songList.service';
@@ -70,6 +70,33 @@ export class MusicInfoController {
         }
         return output;
     }
+
+    @Get("search")
+    async getMusicInfoBySearchPagination(@Query() query:any):Promise<MusicInfoOutput[]>{
+        let output:MusicInfoOutput[] = [];
+        const resultList = await this.musicInfoService.searchPagination(query);
+        for(let i = 0; i < resultList.length; i ++){
+            const musicPrivate = await this.musicSavePrivateService.findMusicPrivate(resultList[i]._MusicRawId)
+            const coverPrivate = await this.ablumService.getCoverByAblumId(resultList[i]._AblumId)
+            const musicInfoEx:MusicInfoOutput = {
+                _id:resultList[i]._id,
+                coverRaw:coverPrivate.coverRaw,
+                coverType:coverPrivate.coverType,
+                musicRaw:musicPrivate.musicRaw,
+                musicType:musicPrivate.musicType,
+                musicName:resultList[i].musicName,
+                musicStyle:resultList[i].musicStyle,
+                musicSinger:resultList[i].musicSinger,
+                musicAuthor:resultList[i].musicAuthor,
+                musicLong:resultList[i].musicLong,
+                musicUploadTime:resultList[i].musicUploadTime
+            }
+            output.push(musicInfoEx)
+        }
+        return output;
+    }
+
+
 
     @Post()
     @UseInterceptors(FileInterceptor('file'))

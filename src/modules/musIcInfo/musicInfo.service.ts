@@ -33,6 +33,29 @@ export class MusicInfoService {
         }
     }
 
+
+    public async searchPagination(query:any):Promise<MusicInfo[]>{
+        const {  page,limit,name,style,singer,author } = query
+        const filters:any = {};
+        if(name){
+            filters.musicName = { $regex:name,$options:"i"};
+        }
+        if(style){
+            filters.musicStyle = { $regex:style,$options:"i"};
+        }
+
+        /* if(sortBy){
+            const sortDirection = sortBy.startsWith('-') ? -1 : 1;
+            sort[sortBy.replace(/^-/, '')] = sortDirection;
+        }  */
+
+        return this.musicInfoModel.find(filters)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean();
+
+    }
+
     public async postMusic(
         _AblumId:string,
         musicRawId:string,
