@@ -24,7 +24,7 @@ export class SongList extends Document{
 
 export class SongListExtend extends Document{
     @Prop()
-    readonly _MusicIdList:string[];
+    readonly _MusicIdList:string;
 
     @Prop()
     readonly songListName:string;

@@ -99,8 +99,9 @@ export class SongListController {
             imgData.mimetype
         );
         const id_Img = res._id;
+        const musicIdList = songList._MusicIdList.split(',')
         this.songListService.postSongList(
-            songList._MusicIdList,
+            musicIdList,
             id_Img,
             songList.songListName,
             songList.songListDesprition,

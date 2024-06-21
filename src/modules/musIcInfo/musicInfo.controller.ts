@@ -96,6 +96,12 @@ export class MusicInfoController {
         return output;
     }
 
+    @Get("search/total")
+    async getTotalBySearchPagination(@Query() query:any):Promise<number>{
+        const resultList = await this.musicInfoService.searchNoPagination(query);
+        return resultList.length;
+    }
+
 
 
     @Post()

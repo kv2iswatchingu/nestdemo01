@@ -35,7 +35,7 @@ export class MusicSavePrivateService {
                 throw Error("保存失败")
             }
         }).catch(err =>{
-            console.log("完全错误")
+            console.log("完全错误，元数据存储失败")
         })
     }
 
