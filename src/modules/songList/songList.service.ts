@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { songListDto } from 'src/dto/pagination.dto';
 import { SongList, SongListOutput } from 'src/interface/songList.interface';
 
 @Injectable()
@@ -32,11 +31,8 @@ export class SongListService {
         }
     }
 
-    public async getSongList(query:songListDto):Promise<SongList[]>{
+    public async getSongListCate(query:any):Promise<SongList[]>{
         const {  page,limit,sortBy,name,category } = query
-        //console.log(query)
-        //console.log(query.name)
-
         const filters:any = {};
         if(name){
             filters.songListName = { $regex:name,$options:"i"};
@@ -57,6 +53,21 @@ export class SongListService {
         .skip((page - 1) * limit)
         .limit(limit)
         .lean();
+    }
+    public async getSonglistTotalPagination(query:any):Promise<SongList[]>{
+        const { name,category } = query
+        const filters:any = {};
+        if(name){
+            filters.songListName = { $regex:name,$options:"i"};
+        }
+        if(category){
+            filters.songListStyle = { $regex:category,$options:"i"};
+        }
+        return this.songListModel.find(filters).lean();
+    }
+
+    public async getSonglistCategory():Promise<string[]>{
+       return this.songListModel.distinct('songListStyle',{})
     }
 
 
