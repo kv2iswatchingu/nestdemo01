@@ -14,6 +14,9 @@ export class Ablum extends Document{
 
     @Prop()
     readonly ablumYear:string;
+
+    @Prop()
+    readonly ablumPop:number;
 }
 
 export class AblumInfo extends Document{
@@ -34,5 +37,5 @@ export type AblumOutput = {
     coverType:string;
     ablumBand:string;
     ablumYear:string;
-
+    ablumPop:number;
 }

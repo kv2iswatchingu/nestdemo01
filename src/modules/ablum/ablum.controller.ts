@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AblumService } from './ablum.service';
 import { Ablum, AblumInfo, AblumOutput } from 'src/interface/ablum.interface';
 import { CoverPrivateService } from '../private/coverPrivate/coverPrivate.service';
@@ -26,12 +26,37 @@ export class AblumController {
                 coverRaw:coverData.coverRaw,
                 coverType:coverData.coverType,
                 ablumBand:ablumRaw[i].ablumBand,
-                ablumYear:ablumRaw[i].ablumYear
+                ablumYear:ablumRaw[i].ablumYear,
+                ablumPop:ablumRaw[i].ablumPop
             }
             output.push(ablumEx)
         }
         return output;
     }
+
+    @Get('getMainPage')
+    async getMainPage():Promise<AblumOutput[]>{
+        let output:AblumOutput[] = [];
+        const ablumRaw = await this.ablumService.getMainPage();
+        for(let i = 0; i < ablumRaw.length; i++){
+            const coverData = await this.coverService.findCoverPrivate(ablumRaw[i].id_Cover)
+            
+            const ablumEx:AblumOutput = {
+                ablumId:ablumRaw[i]._id,
+                ablumName:ablumRaw[i].ablumName,
+                coverRaw:coverData.coverRaw,
+                coverType:coverData.coverType,
+                ablumBand:ablumRaw[i].ablumBand,
+                ablumYear:ablumRaw[i].ablumYear,
+                ablumPop:ablumRaw[i].ablumPop
+            }
+            output.push(ablumEx)
+        }
+        return output;
+    }
+
+
+
 
     @Get('GetById/:ablumId')
     async getById(@Param("ablumId") ablumId:string):Promise<Ablum>{
@@ -58,5 +83,10 @@ export class AblumController {
             ablumInfo.ablumBand,
             ablumInfo.ablumYear
         )
+    }
+
+    @Put('pop/:ablumId')
+    async updatePop(@Param('ablumId') ablumId:string){
+        return this.ablumService.updatePop(ablumId);
     }
 }

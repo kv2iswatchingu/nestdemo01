@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { SongListService} from './songList.service';
 import { SongList, SongListExtend, SongListOutput } from 'src/interface/songList.interface';
 import { ImgPrivateService } from '../private/imgPrivate/imgPrivate.service';
@@ -113,5 +113,11 @@ export class SongListController {
             songList.songListDesprition,
             songList.songListStyle
         )
+    }
+
+
+    @Put('pop/:songListId')
+    async updatePop(@Param('songListId') songListId:string){
+        return this.songListService.updatePop(songListId);
     }
 }

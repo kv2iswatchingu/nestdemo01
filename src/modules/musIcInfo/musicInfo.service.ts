@@ -10,6 +10,15 @@ export class MusicInfoService {
         @InjectModel("MusicInfo_MODEL") private readonly musicInfoModel:Model<MusicInfo>
     ){}
 
+    public async getMusicInfoById(musicInfoId:string):Promise<MusicInfo>{
+        try{
+            return this.musicInfoModel.findById(musicInfoId).lean();
+        }
+        catch{
+            throw Error("失败")
+        }
+    }
+
     public async getMusicInfoListBySonglist(idList:string[]):Promise<MusicInfo[]>{
         try{
             let musicInfoList:MusicInfo[] = [];

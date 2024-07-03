@@ -17,6 +17,29 @@ export class MusicInfoController {
     ){
 
     }
+    @Get('musicInfo/:musicInfoId')
+    async getMusicIfoById(@Param('musicInfoId') musicInfoId:string):Promise<MusicInfoOutput>{
+        let output:MusicInfoOutput;
+        const result = await this.musicInfoService.getMusicInfoById(musicInfoId);
+        const musicPrivate = await this.musicSavePrivateService.findMusicPrivate(result._MusicRawId)
+        const coverPrivate = await this.ablumService.getCoverByAblumId(result._AblumId)
+
+        output =  {
+            _id:musicInfoId,
+            coverRaw:coverPrivate.coverRaw,
+            coverType:coverPrivate.coverType,
+            musicRaw:musicPrivate.musicRaw,
+            musicType:musicPrivate.musicType,
+            musicName:result.musicName,
+            musicStyle:result.musicStyle,
+            musicSinger:result.musicSinger,
+            musicAuthor:result.musicAuthor,
+            musicLong:result.musicLong,
+            musicUploadTime:result.musicUploadTime
+        }
+        return output;
+    }
+
 
     @Get('songListId/:songListId')
     async getMusicInfoListBySonglist(@Param('songListId') songListId:string):Promise<MusicInfoOutput[]>{

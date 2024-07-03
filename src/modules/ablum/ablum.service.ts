@@ -23,6 +23,19 @@ export class AblumService {
             throw Error("失败")
         }
     }
+
+    //MainPage
+    public async getMainPage():Promise<Ablum[]>{
+        try{
+            return this.ablumModel.aggregate([
+                {$sample:{size:8}}
+            ]).sort({['_id']: -1});
+        }
+        catch{
+            throw Error("失败")
+        }
+    }
+
     //
     public async getById(ablumId:string):Promise<Ablum>{
         try{
@@ -51,7 +64,8 @@ export class AblumService {
                         ablumName:ablumName,
                         id_Cover:id_Cover,
                         ablumBand:ablumBand,
-                        ablumYear:ablumYear    
+                        ablumYear:ablumYear,
+                        ablumPop:0 
                     }
                 )
                 return createAblumData.save();
@@ -75,4 +89,8 @@ export class AblumService {
         }
     }
     
+    public async updatePop(ablumId:string){
+        const result = await this.ablumModel.findById(ablumId);
+        return this.ablumModel.findByIdAndUpdate(ablumId,{$set:{['ablumPop']:result.ablumPop + 1}},{new:true})
+    }
 }
